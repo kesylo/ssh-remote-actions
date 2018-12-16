@@ -1,0 +1,4 @@
+whoami
+ifconfig
+apt-get install vlc browser-plugin-vlc -y
+mkdir -p ~/Documents/test.py \n

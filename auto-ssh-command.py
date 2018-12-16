@@ -1,22 +1,45 @@
 #!/usr/bin/env python3
 import paramiko
+import time
 
 
 # Path to hosts file
-file = "hosts"
+hosts = "hosts.txt"
+commands = "commands.txt"
+port = 22
 
 # Loop through each host
-f = open(file, "r")
+f = open(hosts, "r")
 for x in f:
-    # Separate ip from pwd
-    ip = 
 
-    # Create ssh client
-    ssh = paramiko.SSHClient()
+    # Split the hole string
+    list_string = x.split()
 
-    # Set policy to auto accept ssh keys
-    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy)
+    # get ip
+    ip = list_string[2]
 
-    # Connect to host
-    ssh.connect()
-    print(x)
+     # get user
+    user = list_string[5]
+
+    # get pwd
+    pwd = list_string[8]
+
+    # init connection to host
+    ssh_client = paramiko.SSHClient()
+    # Accept default policy for fis
+    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh_client.connect(ip,port=port, username=user, password=pwd)
+
+    sudo_access = f"echo {pwd} | sudo -S "
+
+    g = open(commands, "r")
+    for c in g:
+        command = sudo_access + c
+        stdin, stdout, stderr = ssh_client.exec_command(command)
+        cmd_out = stdout.readlines()
+        print ('\n'.join(cmd_out))
+
+    
+
+
+    
